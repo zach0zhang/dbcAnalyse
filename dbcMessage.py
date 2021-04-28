@@ -42,7 +42,7 @@ class dbcMessage(message):
 
 
 if __name__ == '__main__':
-    for line in open("./tmp.dbc", 'r'):
+    for line in open("./test.dbc", 'r'):
         if re.match('BO_', line) != None:
             strInput = line
             s = dbcMessage(strInput)

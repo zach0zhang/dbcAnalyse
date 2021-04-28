@@ -74,7 +74,7 @@ class dbcSignal(signal):
 
 
 if __name__ == '__main__':
-    for line in open("./tmp.dbc", 'r'):
+    for line in open("./test.dbc", 'r'):
         if re.match('SG_', line) != None:
             strInput = line
             s = dbcSignal(strInput)

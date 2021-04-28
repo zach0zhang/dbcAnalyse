@@ -93,7 +93,7 @@ class dbc():
 
 if __name__ == '__main__':
 
-    d = dbc("./foxbms.dbc")
+    d = dbc("./test.dbc")
     d.parse()
     d.printdbcInfo()
     
