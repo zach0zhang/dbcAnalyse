@@ -1,3 +1,4 @@
+from dbcAnalyse.dbcbase import message
 import re
 from . import dbcMessage
 from . import dbcSignal
@@ -65,6 +66,33 @@ class dbc():
                 #self.messageAndSignalsDict[messageTmp.messageId].message.printMessageInfo()
                 messageFlag = False
                 signalList = []
+                continue
+
+            # CM_
+            res = re.match(r'CM_ ', lineStr)
+            if res != None:
+                # CM_ BO_ ID "Comment"
+                ret = re.match(r'CM_\s+BO_\s+(?P<ID>\w+)\s+["](?P<Comment>.+)["]', lineStr)
+                if ret != None:
+                    id = int(ret.groupdict()["ID"])
+                    comment = ret.groupdict()["Comment"]
+                    if id in self.messageAndSignalsDict:
+                        self.messageAndSignalsDict[id].message.comment = comment
+                        continue
+                # CM_ SG_ ID SIGNAME "Comment"
+                ret = re.match(r'CM_\s+SG_\s+(?P<ID>\w+)\s+(?P<Sig>\w+)\s+["](?P<Comment>.+)["]', lineStr)
+                if ret != None:
+                    id = int(ret.groupdict()["ID"])
+                    signalName = ret.groupdict()["Sig"]
+                    comment = ret.groupdict()["Comment"]
+                    if id in self.messageAndSignalsDict:
+                        for i in range(len(self.messageAndSignalsDict[id].signalList)):
+                            if self.messageAndSignalsDict[id].signalList[i].signalName == signalName:
+                                self.messageAndSignalsDict[id].signalList[i].comment = comment
+                                continue
+
+                    continue
+
         
         if messageFlag == True:
             mAndS = dbcMsgSigs(messageTmp, signalList)
@@ -86,7 +114,7 @@ class dbc():
         print("node list: {0}".format(self.nodeList))
         print("message and signals:")
         for key, value in self.messageAndSignalsDict.items():
-            print("id: {0}".format(key))
+            print("id: {0}; signalNum: {1}".format(key, len(value.signalList)))
             value.message.printMessageInfo()
             for sig in value.signalList:
                 sig.printSignalInfo()

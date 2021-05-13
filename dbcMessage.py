@@ -6,6 +6,7 @@ class dbcMessage(message):
         super(dbcMessage, self).__init__()
         self.dbcMessageInputStr = dbcMessageInput.strip()
         self.parsed = False
+        self.comment = ""
 
     # BO_ message_id message_name: message_size transmitter
     def parse(self):
@@ -37,8 +38,9 @@ class dbcMessage(message):
         self.__checkParsed()
 
         print('''\tmessage_id: {0}; message_name: {1};
-        message_size: {2}; transmitter: {3}\n'''.format(self.messageId, \
-            self.messageName, self.messageLength, self.transmitter))   
+        message_size: {2}; transmitter: {3};
+        comment: {4};\n'''.format(self.messageId, \
+            self.messageName, self.messageLength, self.transmitter, self.comment))   
 
 
 if __name__ == '__main__':

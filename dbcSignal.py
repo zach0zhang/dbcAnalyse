@@ -7,6 +7,7 @@ class dbcSignal(signal):
         super(dbcSignal, self).__init__()
         self.dbcSignalStrInput = dbcSignalStr.strip()
         self.parsed = False
+        self.comment = ""
 
     '''
     dbc signal format:
@@ -67,10 +68,11 @@ class dbcSignal(signal):
         print('''\tsignal_name: {0}; multiplexer_indicator: {1};
         start_bit: {2}; signal_length: {3}; byte_order: {4};
         value_type: {5}; factor: {6}; offset: {7};
-        mininum: {8}; maxnum: {9}; unit: {10}; receiver: {11}\n'''.format(self.signalName, \
+        mininum: {8}; maxnum: {9}; unit: {10}; receiver: {11};
+        comment: {12};\n'''.format(self.signalName, \
             self.multiplexerIndicator, self.startBit, self.signalLength, \
             byteOrder, value_type, self.factor, self.offset, self.min, \
-            self.max, self.unit, self.receiver))
+            self.max, self.unit, self.receiver, self.comment))
 
 
 if __name__ == '__main__':
