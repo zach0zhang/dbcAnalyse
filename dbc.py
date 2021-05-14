@@ -89,9 +89,32 @@ class dbc():
                         for i in range(len(self.messageAndSignalsDict[id].signalList)):
                             if self.messageAndSignalsDict[id].signalList[i].signalName == signalName:
                                 self.messageAndSignalsDict[id].signalList[i].comment = comment
-                                continue
+                                break
 
                     continue
+
+            #VAL_ 
+            res = re.match(r'VAL_', lineStr)
+            if res != None:
+                ret = re.match(r'VAL_\s+(?P<ID>\w+)\s+(?P<Sig>\w+)\s+', lineStr)
+                if ret != None:
+                    id = int(ret.groupdict()["ID"])
+                    signalName = ret.groupdict()["Sig"]
+                    subStr = ret.group()
+                    listStr = lineStr.replace(subStr, '')
+                    r = re.findall(r'(?P<Value>\w+) ["](?P<Comment>\w+)["]', listStr)
+                    if r != None and id in self.messageAndSignalsDict:
+                        for i in range(len(self.messageAndSignalsDict[id].signalList)):
+                            if self.messageAndSignalsDict[id].signalList[i].signalName  == signalName:
+                                for j in r:
+                                    value = j[0]
+                                    comment = j[1]
+                                    self.messageAndSignalsDict[id].signalList[i].valueComment[value] = comment
+                                break
+                continue
+
+
+                    #print(id, signalName, listStr)
 
         
         if messageFlag == True:
