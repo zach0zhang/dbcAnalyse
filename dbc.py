@@ -3,6 +3,7 @@ import re
 from . import dbcMessage
 from . import dbcSignal
 
+debugMode = 0 # debug mode: open(1), close(0)
 
 class dbcMsgSigs():
     def __init__(self, message = None, signalList = None):
@@ -47,7 +48,10 @@ class dbc():
             res = re.match(r'BO_ ', lineStr)
             if res != None:
                 messageTmp = dbcMessage.dbcMessage(lineStr)
-                messageTmp.parse()
+                ret = messageTmp.parse()
+                if ret != True and debugMode == 1:
+                    print("error message parse:", lineStr)
+                    return False
                 messageFlag = True
                 continue
 
@@ -55,7 +59,10 @@ class dbc():
             res = re.match(r'SG_ ', lineStr)
             if res != None:
                 signal = dbcSignal.dbcSignal(lineStr)
-                signal.parse()
+                ret = signal.parse()
+                if ret != True and debugMode == 1:
+                    print("error signal parse:", lineStr)
+                    return False
                 signalList.append(signal)
                 continue
 
@@ -146,7 +153,8 @@ if __name__ == '__main__':
 
     d = dbc("./test.dbc")
     d.parse()
-    d.printdbcInfo()
+    if debugMode == 0:
+        d.printdbcInfo()
     
     '''
     for line in open('./tmp.dbc', 'r'):

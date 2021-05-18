@@ -23,12 +23,13 @@ class dbcSignal(signal):
 
         res = re.search(r'SG_\s(?P<signalName>\w+)\s+(?P<multiplexerIndicator>\w*)\s*'+
         r'[:]\s+(?P<startBit>\d+)[|](?P<signalSize>\d+)[@](?P<byteOrder>[01])(?P<valueType>[+-])\s+'+
-        r'[(](?P<factor>[-]?(0|\d+)(\.[\d, E]+)?)[,](?P<offset>[-]?(0|\d+)(\.[\d, E]+)?)[)]\s+'+
-        r'\[(?P<min>[-]?(0|\d+)(\.[\d, E]+)?)[|](?P<max>[-]?(0|\d+)(\.[\d, E]+)?)\]\s+'+
-        r'["](?P<unit>\w*)["]\s+(?P<receiver>\w*)\s*', self.dbcSignalStrInput)
+        r'[(](?P<factor>[-]?(0|\d+)(\.[\d, E, +, -]+)?)[,](?P<offset>[-]?(0|\d+)(\.[\d, E, +, -]+)?)[)]\s+'+
+        r'\[(?P<min>[-]?(0|\d+)(\.[\d, E, +, -]+)?)[|](?P<max>[-]?(0|\d+)(\.[\d, E, +, -]+)?)\]\s+'+
+        r'["](?P<unit>\S*)["]\s+(?P<receiver>\w*)\s*', self.dbcSignalStrInput)
 
 
         if res == None:
+            print(self.dbcSignalStrInput)
             return False
         else:
             matchGroup = res.groupdict()
